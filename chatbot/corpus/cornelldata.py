@@ -1,6 +1,8 @@
 """
 Load the cornell movie dialog corpus.
 """
+MOVIE_LINES_FIELDS = ["lineID", "characterID", "movieID", "character", "text"]
+MOVIE_CONVERSATIONS_FIELDS = ["character1ID", "character2ID", "movieID", "utteranceIDs"]
 
 
 class CornellData:
@@ -15,13 +17,10 @@ class CornellData:
         self.lines = {}
         self.conversations = []
 
-        MOVIE_LINES_FIELDS = ["lineID", "characterID", "movieID", "character", "text"]
-        MOVIE_CONVERSATIONS_FIELDS = ["character1ID", "character2ID", "movieID", "utteranceIDs"]
+        self.lines = self.loadLines(dirName + "movie_lines.txt", MOVIE_LINES_FIELDS)
+        self.conversations = self.loadConversations(dirName + "movie_conversations.txt", MOVIE_CONVERSATIONS_FIELDS)
 
-        self.lines = self.loadLines(dirName + "/movie_lines.txt", MOVIE_LINES_FIELDS)
-        self.conversations = self.loadConversations(dirName + "/movie_conversations.txt", MOVIE_CONVERSATIONS_FIELDS)
-
-        print('Loaded: %d lines, %d conversations' % (len(self.lines), len(self.conversations)))
+        # print('Loaded: %d lines, %d conversations' % (len(self.lines), len(self.conversations)))
         # TODO: Cleaner program !!
 
     def loadLines(self, fileName, fields):
@@ -68,10 +67,10 @@ class CornellData:
 
                 lineIds = convObj["utteranceIDs"][2:-3].split("', '")
 
-                #print(convObj["utteranceIDs"])
-                #for lineId in lineIds:
-                    #print(lineId, end=' ')
-                #print()
+                # print(convObj["utteranceIDs"])
+                # for lineId in lineIds:
+                    # print(lineId, end=' ')
+                # print()
 
                 # Reassemble lines
                 convObj["lines"] = []
@@ -81,3 +80,6 @@ class CornellData:
                 conversations.append(convObj)
 
         return conversations
+
+    def get_conversation(self):
+        return self.conversations
